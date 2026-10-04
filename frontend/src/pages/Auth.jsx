@@ -57,15 +57,27 @@ export default function Auth() {
     setError(null);
     try {
       const creds = { ...formData, role };
+      if (creds.email) creds.email = creds.email.trim();
+      if (creds.password) creds.password = creds.password.trim();
       if (creds.mobile && !creds.mobile.startsWith('+91')) {
         creds.mobile = '+91' + creds.mobile.replace(/\s+/g, '');
       }
+      
+      console.log(`[Auth] Attempting login for role: ${role}`);
       const res = await authService.login(creds);
+      
       if (res.success) {
+        console.log(`[Auth] Login successful. Redirecting to home...`);
         handleRoleRedirection(res.user.role);
       }
     } catch (err) {
-      setError(err.message || 'Unable to authenticate with the provided credentials.');
+      console.error(`[Auth] Login failed:`, err.message);
+      const msg = err.message || 'Unable to authenticate with the provided credentials.';
+      if (msg.includes('Failed to fetch') || msg.includes('Network Error')) {
+        setError('Unable to connect to CanteenOS. Please try again.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
@@ -81,6 +93,8 @@ export default function Auth() {
     setError(null);
     try {
       const dataToSubmit = { ...formData, role };
+      if (dataToSubmit.email) dataToSubmit.email = dataToSubmit.email.trim();
+      if (dataToSubmit.password) dataToSubmit.password = dataToSubmit.password.trim();
       if (dataToSubmit.mobile && !dataToSubmit.mobile.startsWith('+91')) {
         dataToSubmit.mobile = '+91' + dataToSubmit.mobile.replace(/\s+/g, '');
       }
@@ -90,6 +104,7 @@ export default function Auth() {
          dataToSubmit.collegeEmail = dataToSubmit.email;
       }
 
+      console.log(`[Auth] Attempting signup for role: ${role}`);
       const res = await authService.register(dataToSubmit);
       if (res.success) {
         // Auto-login immediately after signup
@@ -101,11 +116,18 @@ export default function Auth() {
            facultyId: dataToSubmit.facultyId
         });
         if (loginRes.success) {
+           console.log(`[Auth] Auto-login successful after signup. Redirecting...`);
            handleRoleRedirection(loginRes.user.role);
         }
       }
     } catch (err) {
-      setError(err.message || 'Registration failed.');
+      console.error(`[Auth] Signup failed:`, err.message);
+      const msg = err.message || 'Registration failed.';
+      if (msg.includes('Failed to fetch') || msg.includes('Network Error')) {
+        setError('Unable to connect to CanteenOS. Please try again.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }

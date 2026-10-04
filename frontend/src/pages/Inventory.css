@@ -1,0 +1,200 @@
+.inventory-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.inventory-filters {
+  display: flex;
+  gap: 16px;
+}
+
+.search-box {
+  position: relative;
+  width: 300px;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary);
+}
+
+.search-box .input-field {
+  padding-left: 40px;
+}
+
+.filter-select {
+  width: 180px;
+}
+
+.table-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.stock-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stock-text {
+  width: 24px;
+  font-weight: 600;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background-color: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  max-width: 100px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.healthy { background-color: var(--success); }
+.progress-fill.low { background-color: var(--warning); }
+.progress-fill.critical, .progress-fill.out-of-stock { background-color: var(--danger); }
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--border);
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--success);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: var(--background);
+  color: var(--dark);
+}
+
+.btn-icon.danger:hover {
+  background-color: var(--danger-bg);
+  color: var(--danger);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px !important;
+  color: var(--secondary);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  margin-bottom: 24px;
+  font-size: 20px;
+}
+
+.form-grid {
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--secondary);
+}
+
+.flex-align-center {
+  justify-content: flex-end;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--dark) !important;
+  font-size: 14px !important;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}

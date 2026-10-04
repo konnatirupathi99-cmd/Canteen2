@@ -57,6 +57,9 @@ export default function Auth() {
     setError(null);
     try {
       const creds = { ...formData, role };
+      if (creds.mobile && !creds.mobile.startsWith('+91')) {
+        creds.mobile = '+91' + creds.mobile.replace(/\s+/g, '');
+      }
       const res = await authService.login(creds);
       if (res.success) {
         handleRoleRedirection(res.user.role);
@@ -77,20 +80,29 @@ export default function Auth() {
     setLoading(true);
     setError(null);
     try {
-      const res = await authService.register({ ...formData, role });
+      const dataToSubmit = { ...formData, role };
+      if (dataToSubmit.mobile && !dataToSubmit.mobile.startsWith('+91')) {
+        dataToSubmit.mobile = '+91' + dataToSubmit.mobile.replace(/\s+/g, '');
+      }
+      if (role === 'MANAGER') {
+         dataToSubmit.personalEmail = dataToSubmit.email;
+      } else {
+         dataToSubmit.collegeEmail = dataToSubmit.email;
+      }
+
+      const res = await authService.register(dataToSubmit);
       if (res.success) {
-        setView('SUCCESS');
-        setTimeout(() => {
-          if (role === 'STUDENT' || role === 'FACULTY') {
-            // Auto login logic can be placed here, for now redirect to login
-            setAuthType('LOGIN');
-            setView('ROLE_SELECTION');
-          } else {
-            // Managers remain on success screen or redirect after delay
-            setAuthType('LOGIN');
-            setView('ROLE_SELECTION');
-          }
-        }, 3000);
+        // Auto-login immediately after signup
+        const loginRes = await authService.login({
+           role,
+           email: dataToSubmit.email,
+           mobile: dataToSubmit.mobile,
+           password: dataToSubmit.password,
+           facultyId: dataToSubmit.facultyId
+        });
+        if (loginRes.success) {
+           handleRoleRedirection(loginRes.user.role);
+        }
       }
     } catch (err) {
       setError(err.message || 'Registration failed.');

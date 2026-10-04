@@ -8,8 +8,10 @@ import POS from './pages/POS';
 import KDS from './pages/KDS';
 import FoodCatalog from './pages/FoodCatalog';
 import FoodFeedback from './pages/FoodFeedback';
+import PaymentsAndQR from './pages/PaymentsAndQR';
 import DigitalTwin from './pages/DigitalTwin';
 import Ordering from './pages/Ordering';
+import CheckoutPayment from './pages/CheckoutPayment';
 import OrderTracking from './pages/OrderTracking';
 import { authService } from './services/authService';
 import './App.css';
@@ -46,6 +48,7 @@ function App() {
           <Route path="kds" element={<KDS />} />
           <Route path="inventory" element={<FoodCatalog />} />
           <Route path="feedback" element={<FoodFeedback />} />
+          <Route path="payments" element={<PaymentsAndQR />} />
           <Route path="digital-twin" element={<DigitalTwin />} />
           <Route path="automation" element={<Placeholder title="Automation Center" />} />
           <Route path="incidents" element={<Placeholder title="Incident Center" />} />
@@ -57,6 +60,7 @@ function App() {
         <Route path="/customer" element={<ProtectedRoute allowedRoles={['STUDENT', 'FACULTY']}><CustomerLayout /></ProtectedRoute>}>
           <Route index element={<Navigate to="ordering" replace />} />
           <Route path="ordering" element={<Ordering />} />
+          <Route path="checkout" element={<CheckoutPayment />} />
           <Route path="orders/:id" element={<OrderTracking />} />
           <Route path="orders" element={<Placeholder title="My Orders History" />} />
           <Route path="favorites" element={<Placeholder title="My Favorites" />} />

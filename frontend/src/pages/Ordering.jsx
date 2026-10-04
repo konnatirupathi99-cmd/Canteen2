@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Clock, Plus, Minus, Trash2, ChevronRight, AlertTriangle, Info, MapPin } from 'lucide-react';
+import { Search, Clock, Plus, Minus, Trash2, ChevronRight, AlertTriangle, Info, MapPin, ShoppingBag } from 'lucide-react';
 import { foodService } from '../services/foodService';
 import { orderService } from '../services/orderService';
 import { authService } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import FoodDetailsModal from '../components/FoodDetailsModal';
 import './Ordering.css';
 
 export default function Ordering() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState(null);
   
   // Data State
@@ -21,7 +22,7 @@ export default function Ordering() {
   const [availabilityFilter, setAvailabilityFilter] = useState('AVAILABLE'); // ALL, AVAILABLE
   
   // Cart State
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(location.state?.cart || []);
   const [cartOpenMobile, setCartOpenMobile] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
@@ -33,6 +34,9 @@ export default function Ordering() {
     const currentUser = authService.getCurrentUser();
     setUser(currentUser);
     loadData();
+    if (location.state?.cart) {
+      navigate('/customer/ordering', { replace: true, state: {} });
+    }
   }, []);
 
   const loadData = async () => {
@@ -74,21 +78,9 @@ export default function Ordering() {
   const cartTotal = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
   const cartItemCount = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (cart.length === 0) return;
-    setCheckoutLoading(true);
-    setCheckoutError(null);
-    try {
-      const order = await orderService.placeOrder(cart);
-      setCart([]);
-      navigate(`/customer/orders/${order.id}`);
-    } catch (err) {
-      setCheckoutError(err.message);
-      // Reload data to reflect true stock
-      loadData();
-    } finally {
-      setCheckoutLoading(false);
-    }
+    navigate('/customer/checkout', { state: { cart } });
   };
 
   // -------------------------------------------------------------

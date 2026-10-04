@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, ShoppingCart, ListOrdered, ChefHat, 
-  PackageSearch, Activity, BrainCircuit, Box, ShieldAlert, Users, MessageSquare
+  PackageSearch, Activity, BrainCircuit, Box, ShieldAlert, Users, MessageSquare, QrCode
 } from 'lucide-react';
 import './Sidebar.css';
 
@@ -18,7 +18,8 @@ const navSections = [
     items: [
       { name: 'POS', path: '/pos', icon: <ShoppingCart size={18} /> },
       { name: 'Orders', path: '/orders', icon: <ListOrdered size={18} /> },
-      { name: 'Kitchen Display', path: '/kds', icon: <ChefHat size={18} /> }
+      { name: 'Kitchen Display', path: '/kds', icon: <ChefHat size={18} /> },
+      { name: 'Payments & QR', path: '/payments', icon: <QrCode size={18} /> }
     ]
   },
   {
